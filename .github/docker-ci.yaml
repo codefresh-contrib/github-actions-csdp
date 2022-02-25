@@ -1,0 +1,105 @@
+name: Docker Image CI
+
+on: [ push, pull_request ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag simple-docker-project:${{ github.sha }}
+
+    - name: Push To Registry
+      uses: redhat-actions/push-to-registry@v2.5.1
+      with:
+        image: simple-docker-project
+        tags: ${{ github.sha }}
+        registry: <DOCKER REGISTRY>
+        username: <DOCKER REGISTRY USERNAME>
+        password: ${{ secrets.docker_registry_password }}
+
+  csdp-report-image-info:
+  
+    runs-on: ubuntu-latest
+    
+    needs: [build]
+  
+    container:
+      image: quay.io/codefreshplugins/argo-hub-workflows-codefresh-csdp-versions-0.0.6-images-report-image-info:main
+    
+    steps:
+      - name: Report Docker Image to CSDP
+        run: |
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            export "GIT_BRANCH=${{ github.head_ref }}"
+          else
+            export "GIT_BRANCH=${{ github.ref_name }}"
+          fi
+          node /usr/src/app/index.js
+        working-directory: /usr/src/app
+        env:
+          IMAGE_URI: docker.io/${{ github.repository }}:${{ github.sha }}
+          CF_API_KEY: ${{ secrets.CF_RUNTIME_KEY }}
+          GIT_BRANCH: ${{ github.ref_name }}
+          GIT_REVISION: ${{ github.sha }}
+          GIT_COMMIT_MESSAGE: GitHub Actions have been here
+          GIT_COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          DOCKER_USERNAME: <DOCKER REGISTRY USERNAME>
+          DOCKER_PASSWORD: ${{ secrets.docker_registry_password }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          GIT_SENDER_LOGIN: ${{ github.actor }}
+          CF_HOST: https://g.codefresh.io
+
+  csdp-image-enricher-jira-info:
+  
+    runs-on: ubuntu-latest
+    
+    needs: [csdp-report-image-info]
+  
+    container:
+      image: quay.io/codefreshplugins/argo-hub-workflows-codefresh-csdp-versions-0.0.6-images-image-enricher-jira-info:main
+
+    steps:
+      - name: Report JIRA Information to CSDP
+        run: |
+          if [[ ${{ github.event_name }} == pull_request ]]; then
+            export "MESSAGE=${{ github.head_ref }}"
+          else
+            export "MESSAGE=${{ github.ref_name }}"
+          fi
+          node /app/src/index.js
+        working-directory: /app/
+        env:
+          IMAGE: docker.io/${{ github.repository }}:${{ github.sha }}
+          CF_API_KEY: ${{ secrets.CF_PLATFORM_KEY }}
+          JIRA_PROJECT_PREFIX: <JIRA PROJECT PREFIX>
+          JIRA_HOST: <JIRA HOST>
+          JIRA_EMAIL: <JIRA USER NAME>
+          JIRA_API_TOKEN: ${{ secrets.jira_api_token }}
+
+  csdp-image-enricher-github-info:
+  
+    runs-on: ubuntu-latest
+    
+    needs: [csdp-report-image-info]
+    
+    if: ${{ github.event_name == 'pull_request' }}
+  
+    container:
+      image: quay.io/codefreshplugins/argo-hub-workflows-codefresh-csdp-versions-0.0.6-images-image-enricher-git-info:main
+
+    steps:
+      - name: Report GitHub Pull Request Information to CSDP
+        run: node /app/src/index.js
+        working-directory: /app/
+        env:
+          IMAGE_SHA: docker.io/${{ github.repository }}:${{ github.sha }}
+          CF_API_KEY: ${{ secrets.CF_PLATFORM_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.head_ref }}
+          REPO: ${{ github.repository }}
+          GIT_SENDER_LOGIN: ${{ github.actor }}
