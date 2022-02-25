@@ -26,7 +26,9 @@ Save this key for later.
 
 1. Open your browser to https://g.codefresh.io/user/settings to generate the required CF_PLATFORM_KEY.
 1. Scroll down to the API Keys section.
+![This is an image](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/platform_api_key_creation_1.png)
 1. Click the GENERATE button.
+![This is an image](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/platform_api_key_creation_2.png)
 1. Save this key for later.
 
 Now that we have the required keys we will need to add them into GitHub as Secrets for our Actions.
@@ -38,7 +40,7 @@ Now that we have the required keys we will need to add them into GitHub as Secre
 1. From the left menu, find the Security section.
 1. Expand Secrets.
 1. Select Actions.
-1. Click the New repository secret button.
+1. Click the New repository secret button. ![This is an image](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/github_actions_secrets.png)
 1. Enter in the CF_RUNTIME_KEY and the value from the output of the Kubernetes command.
 1. Click the Add Secret button.
 1. Click the New repository secret button.
@@ -88,12 +90,16 @@ When you are finished you will be able to run the pipeline which will then popul
 
 https://g.codefresh.io/2.0/images
 
+![CSDP Image Listing](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/images_listing.png)
+
+![CSDP Image Details](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/image_details.png)
+
 DISCLAIMER:
 
 There are two links for images that are currently not functioning that are in our engineering back log.  
 
 See the image below for the two links.
 
-
+![This is an image](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/missing_details.png)
 
 We will also be adding in the future an Annotations Job that you will be able to incorporate into your GitHub Actions workflow which will allow you to add custom metadata to the image.  As an example, URLs to third party systems for security scanning reports.
