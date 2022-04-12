@@ -93,13 +93,3 @@ https://g.codefresh.io/2.0/images
 ![CSDP Image Listing](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/images_listing.png)
 
 ![CSDP Image Details](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/image_details.png)
-
-DISCLAIMER:
-
-There are two links for images that are currently not functioning that are in our engineering back log.  
-
-See the image below for the two links.
-
-![This is an image](https://raw.githubusercontent.com/codefresh-contrib/github-actions-csdp/main/images/missing_details.png)
-
-We will also be adding in the future an Annotations Job that you will be able to incorporate into your GitHub Actions workflow which will allow you to add custom metadata to the image.  As an example, URLs to third party systems for security scanning reports.
