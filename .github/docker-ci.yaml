@@ -47,10 +47,12 @@ jobs:
           GIT_BRANCH: ${{ github.ref_name }}
           GIT_REVISION: ${{ github.sha }}
           GIT_COMMIT_MESSAGE: GitHub Actions have been here
-          GIT_COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GIT_COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
           DOCKER_USERNAME: <DOCKER REGISTRY USERNAME>
           DOCKER_PASSWORD: ${{ secrets.docker_registry_password }}
           WORKFLOW_NAME: ${{ github.workflow }}
+          WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{github.workflow}}
+          LOGS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           GIT_SENDER_LOGIN: ${{ github.actor }}
           CF_HOST: https://g.codefresh.io
 
