@@ -82,7 +82,7 @@ A simple example workflow is available in the file ./.github/workflows/docker-ci
 
 You will need to copy the Jobs from the YAML and look for replacements highlighted by `< VALUE >`.
 
-#### [Report Docker image to CSDP](https://github.com/codefresh-contrib/github-actions-csdp/blob/main/.github/docker-ci.yaml#L25-L55)
+#### [Report Docker image to CSDP](https://github.com/codefresh-contrib/github-actions-csdp/blob/main/.github/docker-ci.yaml#L25-L57)
 #### [Report JIRA information to CSDP](https://github.com/codefresh-contrib/github-actions-csdp/blob/main/.github/docker-ci.yaml#L57-L82)
 #### [Report GitHub Pull Request information to CSDP](https://github.com/codefresh-contrib/github-actions-csdp/blob/add-blog-files/.github/docker-ci.yaml#L84-L105)
 
