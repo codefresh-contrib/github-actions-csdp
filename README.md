@@ -18,7 +18,7 @@ Firstly, you will need to locate 2 API keys that will be required to post data t
 1. If you haven’t already please install the Codefresh Runtime to your Kubernetes cluster. 
 1. From your terminal window run the following command to get the 1st needed API key which will be referred to going forward as CF_RUNTIME_KEY.
  ``` sh 
- $ kubectl get secret -n <runtime-namespace> codefresh-token -o=jsonpath='{.data.token}' | base64 --decode
+ kubectl get secret -n <runtime-namespace> codefresh-token -o=jsonpath='{.data.token}' | base64 --decode
  ```
 Save this key for later.
 
